@@ -1,0 +1,67 @@
+1. Best Time to Buy and Sell Stock
+
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+Solution:
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        profit = 0
+        buy = prices[0]
+        for x in prices[1:]:
+            sell = x
+            profit = max(profit, sell-buy)
+            buy = min(buy,x)
+        return profit
+***************************************************************************************************************************************************************************
+2. Best Time to Buy and Sell Stock II
+
+You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of the stock at any time. 
+However, you can buy it then immediately sell it on the same day.
+Find and return the maximum profit you can achieve.
+
+Solution:
+
+class Solution(object):
+    def maxProfit(self, prices):
+        profit=0
+        for i in range(0, len(prices)-1):
+            if prices[i+1]>prices[i]:
+                profit= profit + prices[i+1]- prices[i]
+        return (profit)
+***************************************************************************************************************************************************************************
+3. Best Time to Buy and Sell Stock III
+
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+Find the maximum profit you can achieve. You may complete at most two transactions.
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+Input: prices = [3,3,5,0,0,3,1,4]
+Output: 6
+Explanation: Buy on day 4 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
+Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.
+
+Solution:
+
+class Solution:
+    def maxProfit(self, prices):
+        n = len(prices)
+        if not prices or n<2:
+            return 0        
+        def one_max_profit(start, end):
+            profit = 0
+            buy = start
+            for x in range(start+1, end+1):
+                profit = max(profit, prices[x]-prices[buy])
+                if prices[x] < prices[buy]:
+                    buy = x
+            return profit      
+        max_profit = 0
+        for i in range(n):
+            temp_max = one_max_profit(0, i) + one_max_profit(i+1, n-1)
+            max_profit = max(temp_max, max_profit)
+        return max_profit 
+***************************************************************************************************************************************************************************
