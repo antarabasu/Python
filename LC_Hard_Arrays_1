@@ -140,3 +140,75 @@ class Solution:
         return res
         
 **************************************************************************************************************************************************  
+#6. Convert a non-negative integer num to its English words representation.
+
+ 
+
+Example 1:
+
+Input: num = 123
+Output: "One Hundred Twenty Three"
+Example 2:
+
+Input: num = 12345
+Output: "Twelve Thousand Three Hundred Forty Five"
+Example 3:
+
+Input: num = 1234567
+Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+
+
+class Solution(object):
+    def numberToWords(self, num):
+        to19 = 'One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve ' \
+               'Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen'.split()
+        tens = 'Twenty Thirty Forty Fifty Sixty Seventy Eighty Ninety'.split()
+        def words(n):
+            if n < 20:
+                return to19[n-1:n]
+            if n < 100:
+                return [tens[n/10-2]] + words(n%10)
+            if n < 1000:
+                return [to19[n/100-1]] + ['Hundred'] + words(n%100)
+            for p, w in enumerate(('Thousand', 'Million', 'Billion'), 1):
+                if n < 1000**(p+1):
+                    return words(n/1000**p) + [w] + words(n%1000**p)
+        return ' '.join(words(num)) or 'Zero'
+**************************************************************************************************************************************************  
+# 7. Design a special dictionary that searches the words in it by a prefix and a suffix.
+
+Implement the WordFilter class:
+
+WordFilter(string[] words) Initializes the object with the words in the dictionary.
+f(string pref, string suff) Returns the index of the word in the dictionary, which has the prefix pref and the suffix suff. If there is more than one valid index, return the largest of them. If there is no such word in the dictionary, return -1.
+
+
+class WordFilter:
+
+    def __init__(self, words: List[str]):
+        self.words = words
+        
+
+    def f(self, prefix: str, suffix: str) -> int:
+        print(self.words)
+        for i in range(0,len(self.words)):
+            if self.words[i][0].startswith(prefix) and self.words[i][-1] == suffix:
+                return i
+**************************************************************************************************************************************************  
+#8. You are given an array of n strings strs, all of the same length.
+
+We may choose any deletion indices, and we delete all the characters in those indices for each string.
+
+For example, if we have strs = ["abcdef","uvwxyz"] and deletion indices {0, 2, 3}, then the final array after deletions is ["bef", "vyz"].
+
+class Solution:
+    def minDeletionSize(self, A):
+        m, n = len(A), len(A[0])
+        dp = [1] * n
+        for j in range(1, n):
+            for i in range(j):
+                if all(A[k][i] <= A[k][j] for k in range(m)):
+                    dp[j] = max(dp[j], dp[i] + 1)
+        return n - max(dp)
+
+**************************************************************************************************************************************************  
